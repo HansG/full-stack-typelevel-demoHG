@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/typelevel-project.iml" filepath="$PROJECT_DIR$/.idea/modules/typelevel-project.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/typelevel-project-build.iml" filepath="$PROJECT_DIR$/.idea/modules/typelevel-project-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.iml" filepath="$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.app.iml" filepath="$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.common.common-sources.iml" filepath="$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.common.common-sources.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.common.coreJS.iml" filepath="$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.common.coreJS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.common.coreJVM.iml" filepath="$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.common.coreJVM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.full-stack-typelevel-demo-build.iml" filepath="$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.full-stack-typelevel-demo-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.server.iml" filepath="$PROJECT_DIR$/.idea/modules/full-stack-typelevel-demo.server.iml" />
     </modules>
   </component>
 </project>
