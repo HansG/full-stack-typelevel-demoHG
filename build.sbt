@@ -96,6 +96,6 @@ lazy val server = (project in file("server"))
       "org.typelevel"     %% "scalacheck-effect-munit"       % "1.0.4"                    % Test,
       "ch.qos.logback"     % "logback-classic"               % logbackVersion             % Test
     ),
-    Compile / mainClass := Some("com.rockthejvm.livedemo.Application")
+    Compile / mainClass := Some("com.rockthejvm.jobsboard.Application")
   )
   .dependsOn(core.jvm)
