@@ -106,15 +106,16 @@ object Fs2WalRe:
 
    import cats.effect.Async
 
-   /*§§
+   /*§§ Bremsen: "sematical blocking ..." zu impure/eager blocking per  dispatcher.unsafeRunSync:
     Consumer channel.stream - concurrently -
          Producer Stream.eval: Sync[F].interruptible: impure:JFiles.walkFileTree ->
-           Visitor:dispatcher.unsafeRunSync(channel.send(... : pure 'channel.send ' zu/in impure per dispatcher.unsafeRunSync
-           "sematical blocking channel.send..." per  dispatcher.unsafeRunSync impure und blockiert impure thread JFiles.walk..
+           im Visitor: "dispatcher.unsafeRunSync(channel.send(..." -> pure 'channel.send' wird  zu/in impure per dispatcher.unsafeRunSync, d.h.
+           "sematical blocking channel.send..." wird per dispatcher.unsafeRunSync impure und blockiert ggf. impure thread JFiles.walk..
            d.h. impure walkFileTree wird kontrolliert durch: pure 'channel.send ' vermöge dispatcher.unsafeRunSync
 
    -> Koordination/Synchronisation per channel
-   main Kontrolle hat Consumer channel.stream
+   -> main Kontrolle hat Consumer channel.stream
+   -> dispatcher nötig für unsafeRunSync !! (Stream.resource(Dispatcher[F]).flatMap:  )
     */
    def walkLazy[F[_] : Async](start: Path, chunkSize: Int): Stream[F, Path] =
       import java.io.IOException
@@ -161,10 +162,10 @@ object Fs2WalRe:
                   channel.stream.flatMap(Stream.chunk).concurrently(Stream.eval(doWalk(dispatcher, channel)))
 
 
-   /*§§
-   impure imperativ "while(acc.size<cS ..)..acc++toWalk.head..toWalk.tail++ descendants aus Using(...list) ..."
-   -> Stream(..acc)  ++ Rekursion : per name-Parameter - wird nicht "aufgerufen", nur in Bind/Pull etc. hinterlegt ->
-       Fiber/Thread stoppt - Kontrolle hat "wieder" der Aufrufer des Stream
+   /*§§ Bremsem: Stream zwischen Quanten (quant1, rest) durch Laziness - auch bei Runtime von IO-  von "++" in Stream(quant1) ++ restStream
+   impure/eager/imperativ "toWalk -> (acc(^=quant1), toWalk(^=rest)): while(acc.size<cS ..)..acc++toWalk.head..toWalk.tail++ descendants aus Using(...list) ..."
+   -> Stream(..acc)  ++ "Rekursion(rest)" : per name-Parameter "Rekursion(rest)" wird (auch) bei beim Laufzeit-Streamen zunächst nicht "aufgerufen", nur in Bind/Pull etc. hinterlegt ->
+       Fiber/Thread für quant1 stoppt - Kontrolle hat "wieder" der Aufrufer des Stream
    Zusätzliches Einhausen für interruptible:   Sync[F].interruptible: ... - aushausen: mit  "Stream.eval(.. Sync[F].interruptible: -> imperativ Stream  ).flatten"
     */
    def walkJustInTime[F[_] : Sync](start: Path, chunkSize: Int): Stream[F, Path] =
