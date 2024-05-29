@@ -271,19 +271,14 @@ object Fs2WalRe:
             val Names = Stream.emits('A'.to('C').toList.map(_.toString))
 
             def loop(cwd: Path, namels: String, depth: Int): Stream[IO, Path] =
-               if depth < MaxDepth then
-                  Names.flatMap:
-                     name =>
-                        val nname = namels + "_" + name
-                        val p = cwd / nname
-                        Stream.eval(Files[IO].createDirectory(p)) >> Stream(p).covary[IO] ++ loop(p, nname, depth + 1)
-               else if (depth == MaxDepth)
-                  Names.flatMap:
-                     name =>
-                        val nname = namels + "_" + name
-                        val p = cwd / nname
-                        Stream.eval(Files[IO].createDirectory(p)) >> Stream(p).covary[IO]
-               else Stream.empty
+               Names.flatMap:
+                  name =>
+                     val nname = namels + "_" + name
+                     val p = cwd / nname
+                     val nextDir = Stream.eval(Files[IO].createDirectory(p)) >> Stream(p).covary[IO]
+                     if depth < MaxDepth then nextDir ++ loop(p, nname, depth + 1)
+                     else if (depth == MaxDepth)  nextDir
+                     else Stream.empty
 
             loop(dir, "", 0)
 
