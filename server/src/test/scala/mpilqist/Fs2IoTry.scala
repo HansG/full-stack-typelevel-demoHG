@@ -39,8 +39,8 @@ class Fs2IoTry:
 
 object Fs2WalRe:
    /*§§
-   Stream.eval(mache setup), dann flatMap für Zielstream
-   mask für: Exception -> Streamende
+   Stream.eval(mache setup), mask für: Exception -> Streamende
+   dann flatMap für Zielstream (mit einem ELement)
     */
    def walkSimple[F[_] : Files](start: Path): Stream[F, Path] =
       Stream.eval(Files[F].getBasicFileAttributes(start)).mask.flatMap: attr =>
@@ -268,7 +268,7 @@ object Fs2WalRe:
       Stream.eval(Files[IO].createTempDirectory).flatMap:
          dir =>
             val MaxDepth = 2
-            val Names = Stream.emits('A'.to('E').toList.map(_.toString))
+            val Names = Stream.emits('A'.to('C').toList.map(_.toString))
 
             def loop(cwd: Path, namels: String, depth: Int): Stream[IO, Path] =
                if depth < MaxDepth then
