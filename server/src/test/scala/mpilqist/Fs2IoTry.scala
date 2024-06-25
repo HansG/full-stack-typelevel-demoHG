@@ -162,7 +162,7 @@ object Fs2WalRe:
                   channel.stream.flatMap(Stream.chunk).concurrently(Stream.eval(doWalk(dispatcher, channel)))
 
 
-   /*§§ Bremsem: Stream zwischen Quanten (quant1, rest) durch Laziness - auch bei Runtime von IO-  von "++" in Stream(quant1) ++ restStream
+   /*§§ Bremsem: Stream zwischen Quanten (quant1, rest) durch Laziness  von "++" in Stream(quant1) ++ restStream
    impure/eager/imperativ "toWalk -> (acc(^=quant1), toWalk(^=rest)): while(acc.size<cS ..)..acc++toWalk.head..toWalk.tail++ descendants aus Using(...list) ..."
    -> Stream(..acc)  ++ "Rekursion(rest)" : per name-Parameter "Rekursion(rest)" wird (auch) bei beim Laufzeit-Streamen zunächst nicht "aufgerufen", nur in Bind/Pull etc. hinterlegt ->
        Fiber/Thread für quant1 stoppt - Kontrolle hat "wieder" der Aufrufer des Stream

@@ -69,7 +69,9 @@ lazy val server = (project in file("server"))
     scalaVersion := scala3Version,
     organization := rockthejvm,
     libraryDependencies ++= Seq(
-      "org.typelevel"         %% "cats-effect"         % catsEffectVersion,
+       "co.fs2" %% "fs2-core" % "3.2.7",
+       "co.fs2" %% "fs2-io" % "3.2.7",
+       "org.typelevel"         %% "cats-effect"         % catsEffectVersion,
       "org.http4s"            %% "http4s-dsl"          % http4sVersion,
       "org.http4s"            %% "http4s-ember-server" % http4sVersion,
       "org.http4s"            %% "http4s-circe"        % http4sVersion,
